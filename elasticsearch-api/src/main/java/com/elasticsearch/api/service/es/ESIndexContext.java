@@ -84,7 +84,7 @@ public class ESIndexContext {
         }
         switch (indexTerm.getType()) {
             case ESIndexTermType.TERM_TYPE:
-            case ESIndexTermType.RANGE_TYPE:
+            case RANGE_TYPE:
             case ESIndexTermType.SHOULD_TYPE:
                 if(terms == null){
                     terms = new ArrayList<>();
