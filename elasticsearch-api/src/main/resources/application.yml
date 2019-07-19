@@ -1,0 +1,7 @@
+my:
+  name: show-analyze
+
+spring:
+  profiles:
+    active: dev
+ 
