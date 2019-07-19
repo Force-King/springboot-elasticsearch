@@ -15,7 +15,11 @@
 
 ### 启动项目
 
-编译： mvn clean install -DskipTests -U
-
-启动：nohup java -jar elasticsearch-api.jar --spring.profiles.active=publish > nohup.log & 
-
+编译：
+````
+mvn clean install -DskipTests -U
+````
+启动：
+````
+nohup java -jar elasticsearch-api.jar --spring.profiles.active=publish > nohup.log & 
+````
