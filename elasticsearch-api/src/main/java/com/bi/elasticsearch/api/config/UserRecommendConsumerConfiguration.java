@@ -29,7 +29,7 @@ public class UserRecommendConsumerConfiguration implements ApplicationListener<C
 
     private Logger logger = LogManager.getLogger(UserRecommendConsumerConfiguration.class);
   
-    @Value("${rocketmq.consumer.namesrvAddr}")
+    @Value("${rocketmq.namesrvAddr}")
     private String namesrvAddr;
 
     @Value("${rocketmq.consumer.topic}")

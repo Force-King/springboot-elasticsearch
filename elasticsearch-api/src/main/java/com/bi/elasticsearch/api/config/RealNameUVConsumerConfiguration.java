@@ -29,7 +29,7 @@ public class RealNameUVConsumerConfiguration implements ApplicationListener<Cont
 
     private Logger logger = LogManager.getLogger(RealNameUVConsumerConfiguration.class);
   
-    @Value("${rocketmq.consumer.namesrvAddr}")
+    @Value("${rocketmq.namesrvAddr}")
     private String namesrvAddr;
 
     @Value("${rocketmq.consumer.topic}")

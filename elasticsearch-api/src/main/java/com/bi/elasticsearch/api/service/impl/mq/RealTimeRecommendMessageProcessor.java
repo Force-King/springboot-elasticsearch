@@ -1,12 +1,13 @@
-package com.bi.elasticsearch.api.service.mq;
+package com.bi.elasticsearch.api.service.impl.mq;
 
-import com.bi.elasticsearch.api.service.UserAnalyzeService;
+import com.alibaba.fastjson.JSONObject;
 import com.bi.elasticsearch.api.entity.requestPara.RealNameUVPara;
 import com.bi.elasticsearch.api.entity.requestPara.UserRecommendPara;
+import com.bi.elasticsearch.api.service.UserAnalyzeService;
+import com.bi.elasticsearch.api.service.mq.MessageProcessor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.alibaba.fastjson.JSONObject;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
