@@ -7,8 +7,12 @@
 ### Spring Boot + ElasticSearch集群 + RocketMQ集群 + Codis集群
 
 - RocketMQ：实现高并发、海量流量情况下的削峰，通过控制消费速度，批量入库ES。
-- 缓存Codis：实时计算结果增加缓存，重复利用，加快计算、查询速度。
-- 提供 rest-api 接口，供客户端实时查询。
+
+- ElasticSearch：海量数据存储、聚合查询、统计分析，分布式快速索引(倒排索引)。
+
+- Codis：实时计算结果增加缓存，重复利用，加快计算、查询速度。
+
+- Rest-Api：提供api接口，供客户端实时查询。
 
 
 ## 启动项目
