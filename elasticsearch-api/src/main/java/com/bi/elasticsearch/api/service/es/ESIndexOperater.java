@@ -163,13 +163,13 @@ public class ESIndexOperater {
             boolQueryBuilder = QueryBuilders.boolQuery();
             for (ESIndexTerm item : indexContext.getTerms()) {
                 switch (item.getType()) {
-                    case ESIndexTermType.TERM_TYPE:
+                    case TERM_TYPE:
                         boolQueryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery(item.getField(), item.getValue()));
                         break;
-                    case ESIndexTermType.RANGE_TYPE:
+                    case RANGE_TYPE:
                         boolQueryBuilder = boolQueryBuilder.must(QueryBuilders.rangeQuery(item.getField()).gte(item.getRangeBegin()).lt(item.getRangeEnd()));
                         break;
-                    case ESIndexTermType.SHOULD_TYPE:
+                    case SHOULD_TYPE:
                         boolQueryBuilder = boolQueryBuilder.should(QueryBuilders.termQuery(item.getField(), item.getValue()));
                         break;
                 }
@@ -189,7 +189,7 @@ public class ESIndexOperater {
         if (indexContext.getViews() != null && indexContext.getViews().size() > 0) {
             for (ESIndexTerm item : indexContext.getViews()) {
                 switch (item.getType()) {
-                    case ESIndexTermType.MATCH_TYPE:
+                    case MATCH_TYPE:
                         matchQueryBuilder = QueryBuilders.matchQuery(item.getField(), item.getValue());
                         break;
                 }
@@ -205,7 +205,7 @@ public class ESIndexOperater {
         if (indexContext.getAggregationGroups() != null && indexContext.getAggregationGroups().size() > 0) {
             for (ESIndexTerm item : indexContext.getAggregationGroups()) {
                 switch (item.getType()) {
-                    case ESIndexTermType.AGGREGATION_GROUP_TYPE:
+                    case AGGREGATION_GROUP_TYPE:
                         if (aggregationBuilder == null) {
                             if (item.getOrders() != null && item.getOrders().size() > 0) {
                                 aggregationBuilder = AggregationBuilders.terms(item.getField()).field(item.getFieldName()).order(item.getOrders());
@@ -230,10 +230,10 @@ public class ESIndexOperater {
             if(aggregationBuilder == null) {
                 for (ESIndexTerm item : indexContext.getAggregationColumns()) {
                     switch (item.getType()) {
-                        case ESIndexTermType.AGGREGATION_COUNT_TYPE:
+                        case AGGREGATION_COUNT_TYPE:
                             aggregationBuilder = AggregationBuilders.count(item.getField()).field(item.getFieldName());
                             break;
-                        case ESIndexTermType.AGGREGATION_DISTINCT_TYPE:
+                        case AGGREGATION_DISTINCT_TYPE:
                             aggregationBuilder = AggregationBuilders.cardinality(item.getField()).field(item.getFieldName());
                             break;
                     }
@@ -242,16 +242,16 @@ public class ESIndexOperater {
                 searchSourceBuilder.size(0);
                 for (ESIndexTerm item : indexContext.getAggregationColumns()) {
                     switch (item.getType()) {
-                        case ESIndexTermType.AGGREGATION_COUNT_TYPE:
+                        case AGGREGATION_COUNT_TYPE:
                             minAggregationBuilder = minAggregationBuilder.subAggregation(AggregationBuilders.count(item.getField()).field(item.getFieldName()));
                             break;
-                        case ESIndexTermType.AGGREGATION_DISTINCT_TYPE:
+                        case AGGREGATION_DISTINCT_TYPE:
                             minAggregationBuilder = minAggregationBuilder.subAggregation(AggregationBuilders.cardinality(item.getField()).field(item.getFieldName()));
                             break;
-                        case ESIndexTermType.AGGREGATION_SUM_TYPE:
+                        case AGGREGATION_SUM_TYPE:
                             minAggregationBuilder = minAggregationBuilder.subAggregation(AggregationBuilders.sum(item.getField()).field(item.getFieldName()));
                             break;
-                        case ESIndexTermType.AGGREGATION_AVG_TYPE:
+                        case AGGREGATION_AVG_TYPE:
                             minAggregationBuilder = minAggregationBuilder.subAggregation(AggregationBuilders.avg(item.getField()).field(item.getFieldName()));
                             break;
                     }

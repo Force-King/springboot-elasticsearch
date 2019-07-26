@@ -49,7 +49,7 @@ public class UserAnalyzeController {
         }
         JSONObject obj;
         try {
-            obj = userAnalyzeService.getRecommendRateEchartsData(pid,date);
+            obj = userAnalyzeService.getRecommendRateData(pid,date);
         } catch (Exception e){
             logger.error("------ 调用实时推荐率查询API异常，参数:{\"pid\":\"{}\",\"date\":\"{}\"},Exception：",pid,date,e);
             return RestApiResult.buildEnum(RequestResultEnum.SERVER_EXP).toString();
