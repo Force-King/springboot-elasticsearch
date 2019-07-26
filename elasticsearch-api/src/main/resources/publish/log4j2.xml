@@ -8,9 +8,9 @@
 			<!-- <PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss.SSS z} %-5level %c %M-%msg%xEx%n"/> -->
 		</Console> 
 		
-		<!-- elasticsearch.api info级别的 -->
-        <RollingFile name="elasticsearch.api-info" fileName="logs/elasticsearch.api-info.log"
-                     filePattern="logs/elasticsearch.api-info.log.%d{MM-dd-yyyy}">
+		<!-- bi.analyze info级别的 -->
+        <RollingFile name="bi.analyze-info" fileName="logs/bi.analyze-info.log"
+                     filePattern="logs/bi.analyze-info.log.%d{MM-dd-yyyy}">
             <ThresholdFilter level="info" onMatch="ACCEPT"
                              onMismatch="DENY"/>
             <PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss.SSS z} %-5level %c %M-%msg%xEx%n"/>
@@ -19,9 +19,9 @@
             </Policies>
         </RollingFile>
         
-        <!-- elasticsearch.api error级别的 -->
-        <RollingFile name="elasticsearch.api-error" fileName="logs/elasticsearch.api-error.log"
-                     filePattern="logs/elasticsearch.api-error.log.%d{MM-dd-yyyy}">
+        <!-- bi.analyze error级别的 -->
+        <RollingFile name="bi.analyze-error" fileName="logs/bi.analyze-error.log"
+                     filePattern="logs/bi.analyze-error.log.%d{MM-dd-yyyy}">
             <ThresholdFilter level="error" onMatch="ACCEPT"
                              onMismatch="DENY"/>
             <PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss.SSS z} %-5level %c %M-%msg%xEx%n"/>
@@ -30,9 +30,9 @@
             </Policies>
         </RollingFile>
         
-        <!-- elasticsearch.api warn级别的 -->
-        <RollingFile name="elasticsearch.api-warn" fileName="logs/elasticsearch.api-warn.log"
-                     filePattern="logs/elasticsearch.api-warn.log.%d{MM-dd-yyyy}">
+        <!-- bi.analyze warn级别的 -->
+        <RollingFile name="bi.analyze-warn" fileName="logs/bi.analyze-warn.log"
+                     filePattern="logs/bi.analyze-warn.log.%d{MM-dd-yyyy}">
             <ThresholdFilter level="warn" onMatch="ACCEPT"
                              onMismatch="DENY"/>
             <PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss.SSS z} %-5level %c %M-%msg%xEx%n"/>
@@ -42,8 +42,8 @@
         </RollingFile>
         
         <!-- rpc debug级别的 -->
-        <RollingFile name="elasticsearch.api-debug" fileName="logs/elasticsearch.api-debug.log"
-                     filePattern="logs/elasticsearch.api-debug.log.%d{MM-dd-yyyy}">
+        <RollingFile name="bi.analyze-debug" fileName="logs/bi.analyze-debug.log"
+                     filePattern="logs/bi.analyze-debug.log.%d{MM-dd-yyyy}">
             <ThresholdFilter level="debug" onMatch="ACCEPT"
                              onMismatch="DENY"/>
             <PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss.SSS z} %-5level %c %M-%msg%xEx%n"/>
@@ -58,11 +58,11 @@
 			<appender-ref ref="Console"/> 
 		</root> 
 		<!-- 框架运行中涉及到的日志 -->
-        <logger name="com.elasticsearch" additivity="true">
-            <appender-ref ref="elasticsearch.api-info"/>
-            <appender-ref ref="elasticsearch.api-error"/>
-            <appender-ref ref="elasticsearch.api-debug"/>
-            <appender-ref ref="elasticsearch.api-warn"/>
+        <logger name="com.bi.elasticsearch.api" additivity="true">
+            <appender-ref ref="bi.analyze-info"/>
+            <appender-ref ref="bi.analyze-error"/>
+            <appender-ref ref="bi.analyze-debug"/>
+            <appender-ref ref="bi.analyze-warn"/>
         </logger>
 	</loggers> 
 

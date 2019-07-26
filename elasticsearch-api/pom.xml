@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.framework</groupId>
-		<artifactId>elasticsearch</artifactId>
+		<groupId>com.bi</groupId>
+		<artifactId>real-time-analyze</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>elasticsearch-api</artifactId>
@@ -70,11 +70,24 @@
 		    <groupId>org.apache.rocketmq</groupId>
 		    <artifactId>rocketmq-client</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.codis.jodis</groupId>
+			<artifactId>jodis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.abel533</groupId>
+			<artifactId>ECharts</artifactId>
+		</dependency>
 	</dependencies>
 
 
 	<build>
-		<finalName>elasticsearch-api</finalName>
+		<finalName>bi-analyze</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>

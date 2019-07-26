@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.framework</groupId>
-    <artifactId>elasticsearch</artifactId>
+    <groupId>com.bi</groupId>
+    <artifactId>real-time-analyze</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -15,6 +15,8 @@
         <fastjson.version>1.2.56</fastjson.version>
         <commons-lang3.version>3.8.1</commons-lang3.version>
         <rocketmq.version>4.3.2</rocketmq.version>
+        <codis.jodis.version>0.5.1</codis.jodis.version>
+        <echarts.version>3.0.0.5</echarts.version>
     </properties>
 
     <dependencyManagement>
@@ -83,12 +85,31 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
             </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>1.9.3</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.apache.rocketmq</groupId>
                 <artifactId>rocketmq-client</artifactId>
                 <version>${rocketmq.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.codis.jodis</groupId>
+                <artifactId>jodis</artifactId>
+                <version>${codis.jodis.version}</version>
+            </dependency>
+
+            <!-- EChart插件 start -->
+            <dependency>
+                <groupId>com.github.abel533</groupId>
+                <artifactId>ECharts</artifactId>
+                <version>${echarts.version}</version>
+            </dependency>
+            <!-- EChart插件 end -->
+
         </dependencies>
     </dependencyManagement>
 
@@ -98,9 +119,7 @@
             <properties>
                 <profileActive>dev</profileActive>
             </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+
         </profile>
         <profile>
             <id>test</id>
@@ -119,6 +138,9 @@
             <properties>
                 <profileActive>publish</profileActive>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
     </profiles>
 

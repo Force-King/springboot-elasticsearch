@@ -1,7 +1,7 @@
 my:
-  name: show-analyze
+  name: bi-analyze
 
 spring:
   profiles:
-    active: dev
+    active: publish
  
