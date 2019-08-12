@@ -2,7 +2,7 @@ package com.bi.elasticsearch.api.service.es;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
-import com.bi.elasticsearch.api.enums.ESIndexTermType;
+import com.alibaba.fastjson.JSONObject;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.*;
@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -144,6 +145,17 @@ public class ESIndexOperater {
             }
         }
         return result.isSucceeded();
+    }
+
+    /**
+     * 获取field的聚合结果
+     * @param obj
+     * @param fieldName
+     * @return
+     */
+    public BigDecimal getAggregationValueByField(JSONObject obj, String fieldName) {
+        JSONObject aggregations = obj.getJSONObject("aggregations").getJSONObject(fieldName);
+        return aggregations.getBigDecimal("value")==null ? BigDecimal.ZERO : aggregations.getBigDecimal("value");
     }
 
     /**
@@ -279,87 +291,6 @@ public class ESIndexOperater {
         }
         return result;
     }
-
-    /**
-     * 查询实名登陆UV
-     */
-    public SearchResult getDocumentRealNameUv(String startTime, String endTime) {
-        String queryStr = "{\n" +
-                " \"query\": {\n" +
-                "        \"bool\":{\n" +
-                "            \"must\":[{\n" +
-                "                \"range\":{\n" +
-                "                    \"createTime\": {\n" +
-                "                          \"gte\": \""+startTime+"\",\n" +
-                "                          \"lt\": \""+endTime+"\"\n" +
-                "                      }\n" +
-                "                }\n" +
-                "            }]\n" +
-                "        }       \n" +
-                "    },\n" +
-                "    \"size\": 0,\n" +
-                "    \"aggs\": {\n" +
-                "        \"login_uv\": {\n" +
-                "            \"cardinality\": {\n" +
-                "                \"field\": \"uid\"\n" +
-                "              }\n" +
-                "        }\n" +
-                "     }\n" +
-                "}";
-
-        Search search = new Search.Builder(queryStr).addIndex(indexName).addType(type).build();
-        SearchResult result;
-        try {
-            result = client.execute(search);
-        } catch (IOException e) {
-            logger.error(e);
-            return null;
-        }
-        return result;
-    }
-
-    /**
-     * 查询可推荐用户数
-     */
-    public SearchResult getDocumentRecommend(Integer pid, String startTime, String endTime) {
-        String queryStr = "{\n" +
-                " \"query\": {\n" +
-                "        \"bool\":{\n" +
-                "            \"must\":[{\n" +
-                "                \"range\":{\n" +
-                "                    \"createTime\": {\n" +
-                "                          \"gte\": \""+startTime+"\",\n" +
-                "                          \"lt\": \""+endTime+"\"\n" +
-                "                      }\n" +
-                "                }\n" +
-                "            },{\n" +
-                "                \"term\":{\n" +
-                "                    \"pIds\":\""+pid+"\"\n" +
-                "                }\n" +
-                "            }]\n" +
-                "        }       \n" +
-                "    },\n" +
-                "    \"size\": 0,\n" +
-                "    \"aggs\": {\n" +
-                "        \"user_count\": {\n" +
-                "            \"cardinality\": {\n" +
-                "                \"field\": \"uid\"\n" +
-                "              }\n" +
-                "        }\n" +
-                "      }\n" +
-                "}";
-
-        Search search = new Search.Builder(queryStr).addIndex(indexName).addType(type).build();
-        SearchResult result;
-        try {
-            result = client.execute(search);
-        } catch (IOException e) {
-            logger.error(e);
-            return null;
-        }
-        return result;
-    }
-
 
 }
 

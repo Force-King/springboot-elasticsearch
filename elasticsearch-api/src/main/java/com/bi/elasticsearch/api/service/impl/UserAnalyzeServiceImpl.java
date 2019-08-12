@@ -2,6 +2,9 @@ package com.bi.elasticsearch.api.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.bi.elasticsearch.api.enums.ESIndexTermType;
+import com.bi.elasticsearch.api.service.es.ESIndexContext;
+import com.bi.elasticsearch.api.service.es.ESIndexTerm;
 import com.bi.elasticsearch.api.util.DateUtil;
 import com.bi.elasticsearch.api.entity.HourPeriod;
 import com.bi.elasticsearch.api.entity.requestPara.RealNameUVPara;
@@ -89,8 +92,7 @@ public class UserAnalyzeServiceImpl implements UserAnalyzeService {
             BigDecimal totalUv;
             if(StringUtils.isBlank(cacheTotalUvStr)) {
                 JSONObject realNameObj = this.getRealNameLoginNumForHour(para);
-                JSONObject login_uv = realNameObj.getJSONObject("aggregations").getJSONObject("login_uv");
-                totalUv = login_uv.getBigDecimal("value");
+                totalUv = esIndexOperater.getAggregationValueByField(realNameObj,"uid");
                 //存入缓存
                 redisService.setex(realNameKey, totalUv.toString(),expireTimes);
             } else {
@@ -103,8 +105,7 @@ public class UserAnalyzeServiceImpl implements UserAnalyzeService {
             BigDecimal totalRecommend;
             if(StringUtils.isBlank(recommendNumStr)) {
                 JSONObject recommendObj = this.getUserRecommendNumForHour(para);
-                JSONObject user_count = recommendObj.getJSONObject("aggregations").getJSONObject("user_count");
-                totalRecommend = user_count.getBigDecimal("value");
+                totalRecommend = esIndexOperater.getAggregationValueByField(recommendObj,"uid");
                 //存入缓存
                 redisService.setex(recommendKey, totalRecommend.toString(),expireTimes);
             } else {
@@ -147,24 +148,22 @@ public class UserAnalyzeServiceImpl implements UserAnalyzeService {
     @Override
     public JSONObject getRealNameLoginNumForHour(UserDataPara userDataPara) {
         //从ES查询startTime 到 endTime 之间的数据
-//        ESIndexContext indexContext = new ESIndexContext();
-//
-//        ESIndexTerm uidTerm = new ESIndexTerm();
-//        uidTerm.setType(ESIndexTermType.AGGREGATION_DISTINCT_TYPE);
-//        uidTerm.setField("uid");
-//        uidTerm.setFieldName("uid");
-//        indexContext.addContext(uidTerm);
-//
-//        ESIndexTerm timeTerm = new ESIndexTerm();
-//        timeTerm.setType(ESIndexTermType.RANGE_TYPE);
-//        timeTerm.setField("createTime");
-//        timeTerm.setRangeBegin(userDataPara.getStartTime());
-//        timeTerm.setRangeEnd(userDataPara.getEndTime());
-//        indexContext.addContext(timeTerm);
-//
-//        String result = esIndexOperater.getDocumentResult(realNameUV_IndexName,realNameUV_Type,indexContext).getJsonString();
+        ESIndexContext indexContext = new ESIndexContext();
 
-        String result = esIndexOperater.getDocumentRealNameUv(userDataPara.getStartTime(),userDataPara.getEndTime()).getJsonString();
+        ESIndexTerm uidTerm = new ESIndexTerm();
+        uidTerm.setType(ESIndexTermType.AGGREGATION_DISTINCT_TYPE);
+        uidTerm.setField("uid");
+        uidTerm.setFieldName("uid");
+        indexContext.addContext(uidTerm);
+
+        ESIndexTerm timeTerm = new ESIndexTerm();
+        timeTerm.setType(ESIndexTermType.RANGE_TYPE);
+        timeTerm.setField("createTime");
+        timeTerm.setRangeBegin(userDataPara.getStartTime());
+        timeTerm.setRangeEnd(userDataPara.getEndTime());
+        indexContext.addContext(timeTerm);
+
+        String result = esIndexOperater.getDocumentResult(realNameUV_IndexName,realNameUV_Type,indexContext).getJsonString();
         JSONObject resultObject = JSON.parseObject(result);
         return resultObject;
     }
@@ -178,33 +177,28 @@ public class UserAnalyzeServiceImpl implements UserAnalyzeService {
     @Override
     public JSONObject getUserRecommendNumForHour(UserDataPara userDataPara) {
         //从ES查询startTime 到 endTime 之间的数据
-//        ESIndexContext indexContext = new ESIndexContext();
-//
-//        ESIndexTerm uidTerm = new ESIndexTerm();
-//        uidTerm.setType(ESIndexTermType.AGGREGATION_GROUP_TYPE);
-//        uidTerm.setField("uid");
-//        uidTerm.setFieldName("uid");
-//        indexContext.addContext(uidTerm);
-//
-//        ESIndexTerm pidTerm = new ESIndexTerm();
-//        pidTerm.setType(ESIndexTermType.MATCH_TYPE);
-//        pidTerm.setField("pIds");
-//        pidTerm.setValue(userDataPara.getPid());
-//        indexContext.addContext(pidTerm);
-//
-//        ESIndexTerm timeTerm = new ESIndexTerm();
-//        timeTerm.setType(ESIndexTermType.RANGE_TYPE);
-//        timeTerm.setField("createTime");
-//        timeTerm.setRangeBegin(userDataPara.getStartTime());
-//        timeTerm.setRangeEnd(userDataPara.getEndTime());
-//        indexContext.addContext(timeTerm);
-//
-//        String result = esIndexOperater.getDocumentResult(recommend_IndexName,recommend_Type,indexContext).getJsonString();
-//
-//
-//        String result = esIndexOperater.getDocumentRecommend(10150,"2019-07-24 10:00:00","2019-07-24 19:00:00").getJsonString();
-        String result = esIndexOperater.getDocumentRecommend(userDataPara.getPid(),userDataPara.getStartTime(),userDataPara.getEndTime()).getJsonString();
+        ESIndexContext indexContext = new ESIndexContext();
 
+        ESIndexTerm uidTerm = new ESIndexTerm();
+        uidTerm.setType(ESIndexTermType.AGGREGATION_DISTINCT_TYPE);
+        uidTerm.setField("uid");
+        uidTerm.setFieldName("uid");
+        indexContext.addContext(uidTerm);
+
+        ESIndexTerm pidTerm = new ESIndexTerm();
+        pidTerm.setType(ESIndexTermType.TERM_TYPE);
+        pidTerm.setField("pIds");
+        pidTerm.setValue(userDataPara.getPid());
+        indexContext.addContext(pidTerm);
+
+        ESIndexTerm timeTerm = new ESIndexTerm();
+        timeTerm.setType(ESIndexTermType.RANGE_TYPE);
+        timeTerm.setField("createTime");
+        timeTerm.setRangeBegin(userDataPara.getStartTime());
+        timeTerm.setRangeEnd(userDataPara.getEndTime());
+        indexContext.addContext(timeTerm);
+
+        String result = esIndexOperater.getDocumentResult(recommend_IndexName,recommend_Type,indexContext).getJsonString();
         JSONObject resultObject = JSON.parseObject(result);
         return resultObject;
     }
