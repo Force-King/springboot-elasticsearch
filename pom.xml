@@ -12,7 +12,7 @@
         <springboot.version>2.1.5.RELEASE</springboot.version>
         <elasticsearch.version>6.3.1</elasticsearch.version>
         <jest.version>6.3.1</jest.version>
-        <fastjson.version>1.2.56</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <commons-lang3.version>3.8.1</commons-lang3.version>
         <rocketmq.version>4.3.2</rocketmq.version>
         <codis.jodis.version>0.5.1</codis.jodis.version>
